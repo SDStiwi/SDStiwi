@@ -1,0 +1,1645 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>Douniazed Louafi — Networks, Distributed Systems & IoT</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%236E5DB6'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='28' font-weight='700' text-anchor='middle' fill='white'%3EDL%3C/text%3E%3Cpath d='M51 8c.4 3 1.6 5.4 6 6.4-4.4 1-5.6 3.4-6 6.4-.4-3-1.6-5.4-6-6.4 4.4-1 5.6-3.4 6-6.4z' fill='%23F3C4D6'/%3E%3C/svg%3E">
+  <meta name="description" content="Portfolio of Douniazed Louafi, a Master's student in Networks and Distributed Systems interested in software, IoT and connected systems.">
+  <meta name="theme-color" content="#FAF7FC">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Source+Serif+4:opsz,wght@8..60,400..700&family=Noto+Sans+Arabic:wght@400..700&display=swap" rel="stylesheet">
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var theme = null, lang = null;
+      try {
+        theme = localStorage.getItem('portfolio-theme');
+        lang = localStorage.getItem('portfolio-language');
+      } catch (e) {}
+      if (!theme) {
+        theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      root.setAttribute('data-theme', theme);
+      if (lang === 'fr' || lang === 'ar') {
+        root.lang = lang;
+        root.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      }
+    })();
+  </script>
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN TOKENS
+       ========================================================================== */
+
+    :root {
+      color-scheme: light;
+
+      --bg: #FAF7FC;
+      --surface: #FFFFFF;
+      --surface-soft: #F5F0FA;
+
+      --ink: #2B2933;
+      --muted: #645E70;
+      --line: #E3DBEC;
+
+      --accent: #6E5DB6;
+      --accent-hover: #5C4CA3;
+      --accent-soft: #EBE5F7;
+      --on-accent: #FFFFFF;
+
+      --lav: #CFC3F2;
+      --pink: #F3C4D6;
+      --blue: #C4DCF1;
+      --green: #C3E4D1;
+      --on-tint: #2B2640;
+      --star: #E27DA6;
+
+      --blob-a: rgba(243, 196, 214, 0.55);
+      --blob-b: rgba(196, 220, 241, 0.55);
+      --blob-c: rgba(207, 195, 242, 0.45);
+
+      --shadow: 0 12px 34px rgba(90, 70, 120, 0.09);
+      --shadow-hover: 0 18px 44px rgba(90, 70, 120, 0.16);
+
+      --cow-face: #FFFFFF;
+      --cow-line: #4A4458;
+      --cow-spot: #CFC3F2;
+      --cow-pink: #F3B9CD;
+
+      /* Height of the sticky bar — update if you change the bar */
+      --topbar-h: 4.6rem;
+
+      --sans: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #14131F;
+        --surface: #1E1D2D;
+        --surface-soft: #252336;
+        --ink: #F1EEF7;
+        --muted: #B4AEC1;
+        --line: #37344B;
+        --accent: #B5A6F0;
+        --accent-hover: #C6BAF6;
+        --accent-soft: #302B47;
+        --on-accent: #171520;
+        --lav: #B5A6F0;
+        --pink: #E9B0C9;
+        --blue: #9CC3E6;
+        --green: #A6D4B9;
+        --on-tint: #1A1826;
+        --star: #F0A6C8;
+        --blob-a: rgba(233, 176, 201, 0.13);
+        --blob-b: rgba(156, 195, 230, 0.11);
+        --blob-c: rgba(181, 166, 240, 0.16);
+        --shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+        --shadow-hover: 0 20px 52px rgba(0, 0, 0, 0.38);
+        --cow-face: #F4EEF8;
+        --cow-line: #3B3550;
+        --cow-spot: #B5A6F0;
+        --cow-pink: #E9B0C9;
+      }
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #14131F;
+      --surface: #1E1D2D;
+      --surface-soft: #252336;
+      --ink: #F1EEF7;
+      --muted: #B4AEC1;
+      --line: #37344B;
+      --accent: #B5A6F0;
+      --accent-hover: #C6BAF6;
+      --accent-soft: #302B47;
+      --on-accent: #171520;
+      --lav: #B5A6F0;
+      --pink: #E9B0C9;
+      --blue: #9CC3E6;
+      --green: #A6D4B9;
+      --on-tint: #1A1826;
+      --star: #F0A6C8;
+      --blob-a: rgba(233, 176, 201, 0.13);
+      --blob-b: rgba(156, 195, 230, 0.11);
+      --blob-c: rgba(181, 166, 240, 0.16);
+      --shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+      --shadow-hover: 0 20px 52px rgba(0, 0, 0, 0.38);
+      --cow-face: #F4EEF8;
+      --cow-line: #3B3550;
+      --cow-spot: #B5A6F0;
+      --cow-pink: #E9B0C9;
+    }
+
+    html[lang="ar"] {
+      --sans: "Noto Sans Arabic", system-ui, "Segoe UI", Tahoma, sans-serif;
+      --serif: "Noto Sans Arabic", system-ui, "Segoe UI", Tahoma, sans-serif;
+    }
+
+    /* ==========================================================================
+       2. RESET & BASE
+       ========================================================================== */
+
+    *, *::before, *::after { box-sizing: inherit; }
+
+    html {
+      scroll-behavior: smooth;
+      /* Anchor links land below the sticky bar */
+      scroll-padding-top: calc(env(safe-area-inset-top, 0px) + var(--topbar-h) + 0.5rem);
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 1.125rem;
+      line-height: 1.65;
+      text-rendering: optimizeLegibility;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(38rem 30rem at 6% -4%, var(--blob-a), transparent 70%),
+        radial-gradient(34rem 28rem at 100% 12%, var(--blob-b), transparent 70%),
+        radial-gradient(40rem 30rem at 50% 108%, var(--blob-c), transparent 70%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration-color: var(--accent);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 0.2em;
+      transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    }
+    a:hover { color: var(--accent-hover); }
+
+    button { font: inherit; cursor: pointer; }
+
+    :focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 10px;
+    }
+
+    ul, ol { margin: 0; padding: 0; }
+    h1, h2, h3, p { margin: 0; }
+
+    .i {
+      width: 1.25em;
+      height: 1.25em;
+      flex: none;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .spark { fill: currentColor; stroke: none; }
+
+    .skip {
+      position: absolute;
+      inset-inline-start: 1rem;
+      top: -5rem;
+      z-index: 100;
+      padding: 0.65rem 1rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: var(--on-accent);
+      font-family: var(--sans);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .skip:focus { top: 1rem; }
+
+    .wrap {
+      width: min(1080px, calc(100% - 2.5rem));
+      margin-inline: auto;
+    }
+
+    /* ==========================================================================
+       3. STICKY TOP BAR
+       ========================================================================== */
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: color-mix(in srgb, var(--bg) 82%, transparent);
+      border-bottom: 1px solid transparent;
+      transition:
+        background-color 0.25s ease,
+        border-bottom-color 0.25s ease,
+        box-shadow 0.25s ease;
+      -webkit-backdrop-filter: blur(14px) saturate(150%);
+      backdrop-filter: blur(14px) saturate(150%);
+    }
+
+    /* Adds a subtle border + shadow once the user has scrolled */
+    .topbar.is-stuck {
+      background: color-mix(in srgb, var(--bg) 90%, transparent);
+      border-bottom-color: var(--line);
+      box-shadow: 0 6px 24px rgba(90, 70, 120, 0.06);
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem 1.25rem;
+      padding-block: 0.75rem;
+      font-family: var(--sans);
+    }
+
+    .wordmark {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-inline-end: auto;
+      font-weight: 700;
+      font-size: 1.05rem;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .wordmark:hover { color: var(--ink); }
+    .wordmark .spark { width: 1rem; height: 1rem; color: var(--star); }
+
+    .top nav ul { list-style: none; display: flex; gap: 0.15rem; }
+
+    .top nav a {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .top nav a:hover { background: var(--accent-soft); color: var(--ink); }
+
+    .controls { display: flex; align-items: center; gap: 0.5rem; }
+
+    .lang {
+      display: inline-flex;
+      padding: 3px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--surface) 85%, transparent);
+    }
+    .lang button {
+      min-width: 38px;
+      min-height: 36px;
+      padding: 0 0.7rem;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .lang button:hover { color: var(--ink); }
+    .lang button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+
+    .theme-button {
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--surface) 85%, transparent);
+      color: var(--ink);
+      transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+    }
+    .theme-button:hover { border-color: var(--accent); background: var(--surface); transform: rotate(-12deg); }
+    .theme-button .i { width: 20px; height: 20px; }
+    .theme-button .sun { display: none; }
+    :root[data-theme="dark"] .theme-button .sun { display: block; }
+    :root[data-theme="dark"] .theme-button .moon { display: none; }
+
+    /* ==========================================================================
+       4. RETURN-TO-TOP BUTTON
+       ========================================================================== */
+
+    .to-top {
+      position: fixed;
+      bottom: max(1.25rem, env(safe-area-inset-bottom, 0px) + 1rem);
+      inset-inline-end: 1.25rem;
+      z-index: 40;
+      display: inline-grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--on-accent);
+      box-shadow: var(--shadow-hover);
+      opacity: 0;
+      transform: translateY(12px);
+      transition:
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        background-color 0.2s ease;
+      pointer-events: none;
+    }
+
+    .to-top.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .to-top:hover {
+      background: var(--accent-hover);
+      transform: translateY(-3px);
+    }
+
+    .to-top .i { width: 22px; height: 22px; }
+
+    /* RTL: flip to the left side */
+    [dir="rtl"] .to-top { inset-inline-end: auto; inset-inline-start: 1.25rem; }
+
+    @media (max-width: 480px) {
+      .to-top {
+        width: 44px;
+        height: 44px;
+        inset-inline-end: 1rem;
+      }
+      [dir="rtl"] .to-top { inset-inline-start: 1rem; }
+    }
+
+    /* ==========================================================================
+       5. HERO
+       ========================================================================== */
+
+    .hero { padding-bottom: clamp(3rem, 7vw, 5rem); }
+
+    .intro { padding-top: clamp(2rem, 5vw, 3.5rem); }
+
+    .hi {
+      margin-bottom: 0.6rem;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+    .wave { display: inline-block; transform-origin: 70% 75%; animation: wave 2.2s ease 0.7s 1; }
+
+    .intro h1 {
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: clamp(2.4rem, 7.5vw, 4.25rem);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+    }
+    .intro h1 > span { display: block; }
+
+    .ul { position: relative; display: inline-block; }
+    .squig {
+      position: absolute;
+      left: 0;
+      bottom: -0.16em;
+      width: 100%;
+      height: 0.22em;
+      overflow: visible;
+    }
+    .squig path { fill: none; stroke: var(--star); stroke-width: 4; stroke-linecap: round; opacity: 0.85; vector-effect: non-scaling-stroke; }
+    .sparks { position: absolute; inset-inline-start: calc(100% + 0.2em); top: -0.05em; width: 0.8em; height: 0.8em; }
+    .sparks .spark { position: absolute; }
+    .sparks .s1 { left: 0; top: 0.12em; width: 0.42em; height: 0.42em; color: var(--star); animation: twinkle 3.4s ease-in-out infinite; }
+    .sparks .s2 { left: 0.42em; top: -0.1em; width: 0.22em; height: 0.22em; color: var(--accent); animation: twinkle 4.2s ease-in-out 0.8s infinite; }
+
+    .role {
+      max-width: 34ch;
+      margin-top: clamp(1.25rem, 3vw, 1.75rem);
+      font-family: var(--sans);
+      font-size: clamp(1.15rem, 2.3vw, 1.4rem);
+      font-weight: 400;
+      line-height: 1.35;
+    }
+
+    .lede { max-width: 36rem; margin-top: 0.75rem; color: var(--muted); }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1.25rem;
+      padding: 0.3rem 0.85rem 0.3rem 0.65rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--pink) 30%, var(--surface));
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+    .pill .i { width: 1.05rem; height: 1.05rem; color: var(--accent); }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0.65rem 1.3rem;
+      border: 1.5px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 0.98rem;
+      font-weight: 600;
+      line-height: 1.2;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(90, 70, 120, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .btn:hover { color: var(--ink); border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+    .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: var(--on-accent); }
+
+    /* ==========================================================================
+       6. JOURNEY
+       ========================================================================== */
+
+    .journey {
+      margin-top: clamp(2.5rem, 6vw, 4rem);
+      padding: clamp(1.25rem, 3.5vw, 2.25rem);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: color-mix(in srgb, var(--surface) 92%, transparent);
+      box-shadow: var(--shadow);
+    }
+
+    .journey-title { font-family: var(--sans); font-weight: 600; font-size: 1.25rem; line-height: 1.3; }
+    .journey-sub { margin-top: 0.2rem; color: var(--muted); font-size: 1rem; }
+
+    .map-wrap { position: relative; margin-top: 1.75rem; }
+    .map { list-style: none; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .node { position: relative; padding-inline: 0.4rem; text-align: center; }
+
+    .node:not(:last-child)::before {
+      content: "";
+      position: absolute;
+      top: 20px;
+      inset-inline-start: 50%;
+      width: 100%;
+      height: 3px;
+      border-radius: 2px;
+      background-image: repeating-linear-gradient(90deg, var(--line) 0 8px, transparent 8px 14px);
+    }
+    .node.sent::before { background-image: none; background-color: var(--accent); }
+
+    .dot {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 0.85rem;
+      border: 2px solid var(--t, var(--lav));
+      border-radius: 16px;
+      background: var(--surface);
+      color: var(--muted);
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    .dot .i { width: 22px; height: 22px; }
+    .node.lit .dot { background: var(--t, var(--lav)); color: var(--on-tint); animation: pop 0.5s ease; }
+
+    .node-name { display: block; font-family: var(--sans); font-weight: 600; font-size: 0.98rem; line-height: 1.25; }
+    .node-desc { display: block; margin-top: 0.25rem; color: var(--muted); font-size: 0.9rem; line-height: 1.45; }
+
+    .packet {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 5;
+      width: 24px;
+      height: 24px;
+      color: var(--star);
+      filter: drop-shadow(0 0 6px color-mix(in srgb, var(--star) 60%, transparent));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .packet .i { width: 100%; height: 100%; }
+
+    .send-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 1.75rem; }
+    .status { min-height: 1.5em; color: var(--muted); font-family: var(--sans); font-size: 0.95rem; }
+
+    /* ==========================================================================
+       7. SECTIONS
+       ========================================================================== */
+
+    .band { padding-block: clamp(3rem, 6vw, 4.5rem); border-top: 1px dashed var(--line); }
+
+    .split { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 1.5rem 3rem; }
+    .split > div { min-width: 0; }
+
+    .split > h2 {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: clamp(1.5rem, 2.6vw, 2rem);
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+    }
+    .split > h2::before {
+      content: "";
+      flex: none;
+      width: 0.6em;
+      height: 0.6em;
+      margin-top: 0.28em;
+      border-radius: 50%;
+      background: var(--bead, var(--lav));
+    }
+    #about { --bead: var(--lav); }
+    #project { --bead: var(--pink); }
+    #experience { --bead: var(--blue); }
+    #skills { --bead: var(--green); }
+    #contact { --bead: var(--pink); }
+
+    .prose { max-width: 40rem; }
+    .prose p + p { margin-top: 1rem; }
+
+    .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .chips li,
+    .date {
+      display: inline-block;
+      padding: 0.2rem 0.8rem;
+      border: 1px solid color-mix(in srgb, var(--t, var(--lav)) 75%, transparent);
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--t, var(--lav)) 35%, var(--surface));
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       8. PROJECT CARD
+       ========================================================================== */
+
+    .project {
+      padding: clamp(1.4rem, 4vw, 2.25rem);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: linear-gradient(140deg, var(--surface), var(--surface-soft));
+      box-shadow: var(--shadow);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .project:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+
+    .project-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+    .project-meta { color: var(--muted); font-family: var(--sans); font-size: 0.95rem; }
+
+    .project h3 {
+      margin-top: 0.3rem;
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+    }
+    .project-sub { margin-top: 0.25rem; color: var(--muted); font-family: var(--sans); font-size: 1.1rem; }
+    .project .body { max-width: 40rem; margin-top: 1.1rem; }
+
+    .cow { flex: none; width: 76px; height: 76px; transform: rotate(6deg); transition: transform 0.3s ease; }
+    .project:hover .cow { transform: rotate(-4deg) scale(1.05); }
+    .cow .face { fill: var(--cow-face); stroke: var(--cow-line); stroke-width: 2.5; }
+    .cow .line { fill: none; stroke: var(--cow-line); stroke-width: 2.5; stroke-linecap: round; }
+    .cow .spot { fill: var(--cow-spot); }
+    .cow .pink { fill: var(--cow-pink); stroke: var(--cow-line); stroke-width: 2; }
+    .cow .eye { fill: var(--cow-line); }
+    .cow .blush { fill: var(--cow-pink); opacity: 0.55; }
+
+    .project .chips { margin-top: 1.4rem; }
+    .project .chips li:nth-child(4n+1) { --t: var(--lav); }
+    .project .chips li:nth-child(4n+2) { --t: var(--pink); }
+    .project .chips li:nth-child(4n+3) { --t: var(--blue); }
+    .project .chips li:nth-child(4n+4) { --t: var(--green); }
+
+    .project-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+
+    /* ==========================================================================
+       9. ROWS
+       ========================================================================== */
+
+    .rows { list-style: none; }
+
+    .row {
+      display: grid;
+      grid-template-columns: 9.5rem minmax(0, 1fr);
+      gap: 0.5rem 2rem;
+      padding-block: 1.4rem;
+      border-top: 1px dashed var(--line);
+    }
+    .row:first-child { padding-top: 0; border-top: 0; }
+
+    .row-side { font-family: var(--sans); font-size: 0.95rem; }
+    .row-side.strong { font-weight: 600; padding-top: 0.15rem; }
+    .row-side .date { font-size: 0.85rem; }
+
+    .row h3 { font-family: var(--sans); font-weight: 600; font-size: 1.2rem; line-height: 1.25; }
+    .org { margin-top: 0.15rem; color: var(--muted); }
+    .row .note { max-width: 40rem; margin-top: 0.5rem; }
+
+    .rows-gap { margin-top: 1.75rem; padding-top: 1.75rem; border-top: 1px dashed var(--line); }
+    .rows-gap .row:first-child { padding-top: 0; }
+
+    /* ==========================================================================
+       10. CONTACT & FOOTER
+       ========================================================================== */
+
+    .mail {
+      display: inline-block;
+      margin-top: 1.1rem;
+      padding-inline: 0.15em;
+      background: linear-gradient(transparent 62%, color-mix(in srgb, var(--pink) 60%, transparent) 62%);
+      font-family: var(--sans);
+      font-size: clamp(1.25rem, 3.6vw, 2rem);
+      font-weight: 600;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+    .mail:hover { color: var(--accent-hover); }
+
+    .contact-links { list-style: none; display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+
+    footer {
+      padding-block: 1.75rem 2.5rem;
+      border-top: 1px dashed var(--line);
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 0.9rem;
+    }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 2rem; }
+
+    /* ==========================================================================
+       11. ANIMATIONS
+       ========================================================================== */
+
+    @keyframes pop {
+      0% { transform: scale(0.85); }
+      60% { transform: scale(1.12); }
+      100% { transform: scale(1); }
+    }
+    @keyframes twinkle {
+      0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+      50% { transform: scale(0.7) rotate(15deg); opacity: 0.65; }
+    }
+    @keyframes wave {
+      0%, 60%, 100% { transform: rotate(0deg); }
+      10%, 30% { transform: rotate(16deg); }
+      20%, 40% { transform: rotate(-10deg); }
+      50% { transform: rotate(8deg); }
+    }
+
+    /* ==========================================================================
+       12. RESPONSIVE
+       ========================================================================== */
+
+    @media (max-width: 860px) {
+      .top { flex-wrap: wrap; padding-block: 0.6rem; }
+      .controls { order: 2; }
+      .top nav { order: 3; width: 100%; }
+      .top nav ul {
+        overflow-x: auto;
+        padding-bottom: 0.25rem;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      .top nav ul::-webkit-scrollbar { display: none; }
+      .top nav li { flex: none; }
+      .top nav a { background: color-mix(in srgb, var(--surface) 75%, transparent); border: 1px solid var(--line); }
+
+      /* Taller bar on mobile — adjust the anchor offset */
+      :root { --topbar-h: 7.4rem; }
+
+      .map { grid-template-columns: 1fr; }
+      .node {
+        display: grid;
+        grid-template-columns: 44px 1fr;
+        column-gap: 1rem;
+        padding: 0 0 1.5rem;
+        text-align: start;
+      }
+      .node:last-child { padding-bottom: 0; }
+      .node:not(:last-child)::before {
+        inset-inline-start: 20px;
+        top: 22px;
+        width: 3px;
+        height: 100%;
+        background-image: repeating-linear-gradient(180deg, var(--line) 0 8px, transparent 8px 14px);
+      }
+      .dot { margin: 0; }
+      .txt { padding-top: 0.15rem; }
+    }
+
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 1.5rem, 680px); }
+      .split { grid-template-columns: minmax(0, 1fr); }
+      .row { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    @media (max-width: 480px) {
+      body { font-size: 1.05rem; }
+      :root { --topbar-h: 6.6rem; }
+      .actions, .project-actions { flex-direction: column; align-items: stretch; }
+      .actions .btn, .project-actions .btn { width: 100%; }
+      .band { padding-block: 2.5rem; }
+      .journey, .project { border-radius: 22px; }
+      .cow { width: 58px; height: 58px; }
+    }
+
+    @media (max-width: 360px) {
+      .lang button { min-width: 34px; padding: 0 0.5rem; }
+      .sparks { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Icon sprite -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2c.6 4.6 2.4 8.4 10 10-7.6 1.6-9.4 5.4-10 10-.6-4.6-2.4-8.4-10-10 7.6-1.6 9.4-5.4 10-10z"/></symbol>
+      <symbol id="i-chip" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></symbol>
+      <symbol id="i-radio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.6"/><path d="M8.6 8.6a4.8 4.8 0 0 0 0 6.8M15.4 8.6a4.8 4.8 0 0 1 0 6.8M5.6 5.6a9 9 0 0 0 0 12.8M18.4 5.6a9 9 0 0 1 0 12.8"/></symbol>
+      <symbol id="i-edge" viewBox="0 0 24 24"><rect x="3" y="13" width="18" height="7" rx="2.5"/><path d="M7.5 16.5h.01M11 16.5h.01M8 13V8M16 13V8M8 8a2 2 0 1 0 .01 0M16 8a2 2 0 1 0 .01 0"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+      <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7.5 18.5h9a4 4 0 0 0 .6-7.95A5.5 5.5 0 0 0 6.6 9.4a4.6 4.6 0 0 0 .9 9.1z"/></symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2.5"/><path d="M8 21h8M12 17v4M7 13l3-3 2.5 2.5L17 8"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.2"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+      <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+    </defs>
+  </svg>
+
+  <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+
+  <!-- ========================================================
+       STICKY TOP BAR
+       ======================================================== -->
+  <div class="topbar" id="top">
+    <div class="wrap">
+      <div class="top">
+        <a class="wordmark" href="#top">
+          <svg class="i spark" aria-hidden="true"><use href="#i-spark"/></svg>
+          <span>Douniazed Louafi</span>
+        </a>
+
+        <nav data-i18n-aria="ui.mainNav" aria-label="Main navigation">
+          <ul>
+            <li><a href="#about" data-i18n="nav.about">About</a></li>
+            <li><a href="#project" data-i18n="nav.project">Project</a></li>
+            <li><a href="#experience" data-i18n="nav.experience">Experience</a></li>
+            <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
+            <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+          </ul>
+        </nav>
+
+        <div class="controls">
+          <div class="lang" role="group" data-i18n-aria="ui.language" aria-label="Language">
+            <button type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+            <button type="button" data-lang="fr" lang="fr" aria-label="Français" aria-pressed="false">FR</button>
+            <button type="button" data-lang="ar" lang="ar" aria-label="العربية" aria-pressed="false">AR</button>
+          </div>
+
+          <button class="theme-button" type="button" id="themeToggle" aria-label="Switch to dark mode" title="Switch to dark mode">
+            <svg class="i moon" aria-hidden="true"><use href="#i-moon"/></svg>
+            <svg class="i sun" aria-hidden="true"><use href="#i-sun"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       HERO
+       ======================================================== -->
+  <header class="hero">
+    <div class="wrap">
+      <div class="intro">
+        <p class="hi"><span data-i18n="hero.hi">Hi, I'm</span> <span class="wave" aria-hidden="true"></span></p>
+
+        <h1>
+          <span>Douniazed</span>
+          <span>
+            <span class="ul">Louafi
+              <svg class="squig" viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 Q 14 1 26 7 T 50 7 T 74 7 T 98 7 T 122 7 T 146 7 T 170 7 T 198 6"/></svg>
+              <span class="sparks" aria-hidden="true">
+                <svg class="i spark s1"><use href="#i-spark"/></svg>
+                <svg class="i spark s2"><use href="#i-spark"/></svg>
+              </span>
+            </span>
+          </span>
+        </h1>
+
+        <p class="role" data-i18n="hero.role">Computer science Master's student, interested in networks, distributed systems and IoT</p>
+        <p class="lede" data-i18n="hero.lede">I enjoy building software and connected devices, from small ESP32 systems to web dashboards.</p>
+
+        <p class="pill">
+          <svg class="i" aria-hidden="true"><use href="#i-pin"/></svg>
+          <span data-i18n="footer.location">Oran, Algeria</span>
+        </p>
+
+        <div class="actions">
+          <a class="btn btn-primary" href="mailto:douniazedlouafi@gmail.com" data-i18n="hero.email">Get in touch</a>
+          <a class="btn" href="https://github.com/SDStiwi" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a class="btn" href="https://www.linkedin.com/in/douniazed-louafi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
+
+      <!-- BoviSense journey -->
+      <div class="journey">
+        <h2 class="journey-title" data-i18n="journey.title">How a sensor reading travels through BoviSense</h2>
+        <p class="journey-sub" data-i18n="journey.subtitle">A simple look at the path data takes in my graduation project.</p>
+
+        <div class="map-wrap" id="map">
+          <ol class="map" role="list">
+            <li class="node" style="--t: var(--lav)">
+              <span class="dot" aria-hidden="true"><svg class="i"><use href="#i-chip"/></svg></span>
+              <span class="txt">
+                <span class="node-name" data-i18n="nodes.sensor.name">Sensor node</span>
+                <span class="node-desc" data-i18n="nodes.sensor.desc">ESP32 with sensors, on the animal</span>
+              </span>
+            </li>
+            <li class="node" style="--t: var(--pink)">
+              <span class="dot" aria-hidden="true"><svg class="i"><use href="#i-radio"/></svg></span>
+              <span class="txt">
+                <span class="node-name" data-i18n="nodes.lora.name">LoRa link</span>
+                <span class="node-desc" data-i18n="nodes.lora.desc">Long-range, low-power radio hop</span>
+              </span>
+            </li>
+            <li class="node" style="--t: var(--blue)">
+              <span class="dot" aria-hidden="true"><svg class="i"><use href="#i-edge"/></svg></span>
+              <span class="txt">
+                <span class="node-name" data-i18n="nodes.edge.name">Edge node</span>
+                <span class="node-desc" data-i18n="nodes.edge.desc">Collects and forwards readings near the farm</span>
+              </span>
+            </li>
+            <li class="node" style="--t: var(--green)">
+              <span class="dot" aria-hidden="true"><svg class="i"><use href="#i-lock"/></svg></span>
+              <span class="txt">
+                <span class="node-name" data-i18n="nodes.mqtt.name">MQTT and TLS</span>
+                <span class="node-desc" data-i18n="nodes.mqtt.desc">Secure telemetry transport</span>
+              </span>
+            </li>
+            <li class="node" style="--t: var(--lav)">
+              <span class="dot" aria-hidden="true"><svg class="i"><use href="#i-cloud"/></svg></span>
+              <span class="txt">
+                <span class="node-name" data-i18n="nodes.cloud.name">Cloud</span>
+                <span class="node-desc" data-i18n="nodes.cloud.desc">Receives, processes and serves the data</span>
+              </span>
+            </li>
+            <li class="node" style="--t: var(--pink)">
+              <span class="dot" aria-hidden="true"><svg class="i"><use href="#i-chart"/></svg></span>
+              <span class="txt">
+                <span class="node-name" data-i18n="nodes.dashboard.name">Dashboard</span>
+                <span class="node-desc" data-i18n="nodes.dashboard.desc">React interface for monitoring</span>
+              </span>
+            </li>
+          </ol>
+
+          <span class="packet" id="packet" aria-hidden="true"><svg class="i spark"><use href="#i-spark"/></svg></span>
+        </div>
+
+        <div class="send-row">
+          <button class="btn" type="button" id="send" data-i18n="journey.button">Send a reading</button>
+          <p class="status" id="status" role="status" aria-live="polite" data-i18n="journey.ready">Ready</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       MAIN
+       ======================================================== -->
+  <main id="main">
+
+    <section class="band" id="about" aria-labelledby="about-h">
+      <div class="wrap split">
+        <h2 id="about-h" data-i18n="sections.about">About</h2>
+        <div class="prose">
+          <p data-i18n="about.p1">I'm a Master's student in Computer Science, specializing in Networks and Distributed Systems. I've worked on software, IoT and connected systems, and I learn something new with every project.</p>
+          <p data-i18n="about.p2">I enjoy turning technical ideas into practical solutions across networking, embedded systems, distributed systems and web development.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="project" aria-labelledby="project-h">
+      <div class="wrap split">
+        <h2 id="project-h" data-i18n="sections.project">Project</h2>
+        <div>
+          <article class="project">
+            <div class="project-head">
+              <div>
+                <p class="project-meta" data-i18n="project.meta">Graduation project, 2025–2026</p>
+                <h3>BoviSense</h3>
+                <p class="project-sub" data-i18n="project.subtitle">Smart Cattle Health Monitoring System</p>
+              </div>
+
+              <svg class="cow" viewBox="0 0 64 64" aria-hidden="true">
+                <defs><clipPath id="cowHead"><rect x="14" y="10" width="36" height="38" rx="16"/></clipPath></defs>
+                <ellipse class="pink" cx="8.5" cy="24" rx="8" ry="5" transform="rotate(-22 8.5 24)"/>
+                <ellipse class="pink" cx="55.5" cy="24" rx="8" ry="5" transform="rotate(22 55.5 24)"/>
+                <path class="line" d="M20 13c-3-4-3-8 1-10M44 13c3-4 3-8-1-10"/>
+                <rect class="face" x="14" y="10" width="36" height="38" rx="16"/>
+                <ellipse class="spot" cx="22" cy="18" rx="9" ry="7" clip-path="url(#cowHead)"/>
+                <circle class="eye" cx="25.5" cy="29" r="2.4"/>
+                <circle class="eye" cx="38.5" cy="29" r="2.4"/>
+                <ellipse class="blush" cx="19.5" cy="35" rx="3.6" ry="2.4"/>
+                <ellipse class="blush" cx="44.5" cy="35" rx="3.6" ry="2.4"/>
+                <ellipse class="pink" cx="32" cy="41" rx="11" ry="7.5"/>
+                <circle class="eye" cx="28" cy="41" r="1.5"/>
+                <circle class="eye" cx="36" cy="41" r="1.5"/>
+              </svg>
+            </div>
+
+            <p class="body" data-i18n="project.description">An IoT system for monitoring cattle health using ESP32-based sensor nodes, LoRa communication, MQTT with TLS, edge processing and a React dashboard. The prototype was tested under real cattle conditions, including sensor placement, telemetry acquisition and LoRa communication.</p>
+
+            <ul class="chips" data-i18n-aria="ui.techUsed" aria-label="Technologies used">
+              <li>ESP32</li>
+              <li>LoRa</li>
+              <li>MQTT + TLS</li>
+              <li>React</li>
+              <li>Vite</li>
+              <li>Supabase</li>
+              <li>Edge-to-cloud</li>
+            </ul>
+
+            <div class="project-actions">
+              <a class="btn btn-primary" href="https://bovi-sense-xi.vercel.app/" target="_blank" rel="noopener noreferrer" data-i18n="project.demo">Live Demo</a>
+              <a class="btn" href="https://github.com/SDStiwi/BoviSense" target="_blank" rel="noopener noreferrer" data-i18n="project.github">View on GitHub</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="experience" aria-labelledby="experience-h">
+      <div class="wrap split">
+        <h2 id="experience-h" data-i18n="sections.experience">Experience and education</h2>
+        <div>
+          <ul class="rows">
+            <li class="row">
+              <p class="row-side"><span class="date" style="--t: var(--lav)" data-i18n="experience.master.date">2024–2026</span></p>
+              <div>
+                <h3 data-i18n="experience.master.title">Master's degree, Networks and Distributed Systems</h3>
+                <p class="org" data-i18n="experience.master.org">University of Science and Technology of Oran Mohamed Boudiaf (USTO-MB)</p>
+                <p class="note" data-i18n="experience.master.note">Graduation project: BoviSense.</p>
+              </div>
+            </li>
+
+            <li class="row">
+              <p class="row-side"><span class="date" style="--t: var(--pink)" data-i18n="experience.intern.date">2023</span></p>
+              <div>
+                <h3 data-i18n="experience.intern.title">IT Internship</h3>
+                <p class="org" data-i18n="experience.intern.org">SONATRACH</p>
+                <p class="note" data-i18n="experience.intern.note">Exposure to IT support, networking and routine technical activities.</p>
+              </div>
+            </li>
+
+            <li class="row">
+              <p class="row-side"><span class="date" style="--t: var(--blue)" data-i18n="experience.bachelor.date">2021–2024</span></p>
+              <div>
+                <h3 data-i18n="experience.bachelor.title">Bachelor's degree, Computer Science</h3>
+                <p class="org" data-i18n="experience.bachelor.org">University of Science and Technology of Oran Mohamed Boudiaf (USTO-MB)</p>
+                <p class="note" data-i18n="experience.bachelor.note">Specialization in Information Systems Engineering and Software Engineering.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="skills" aria-labelledby="skills-h">
+      <div class="wrap split">
+        <h2 id="skills-h" data-i18n="sections.skills">Skills</h2>
+        <div>
+          <ul class="rows">
+            <li class="row" style="--t: var(--lav)">
+              <p class="row-side strong" data-i18n="skills.networking">Networking</p>
+              <ul class="chips"><li>TCP/IP</li><li>MQTT</li><li>TLS</li><li>Wi-Fi</li></ul>
+            </li>
+            <li class="row" style="--t: var(--pink)">
+              <p class="row-side strong" data-i18n="skills.iot">IoT and embedded</p>
+              <ul class="chips"><li>ESP32</li><li>Arduino</li><li>PlatformIO</li><li>LoRa</li><li>Sensor integration</li></ul>
+            </li>
+            <li class="row" style="--t: var(--blue)">
+              <p class="row-side strong" data-i18n="skills.cloud">Cloud and distributed systems</p>
+              <ul class="chips"><li>Supabase</li><li>Cloudflare Workers</li><li>Edge-cloud architecture</li></ul>
+            </li>
+            <li class="row" style="--t: var(--green)">
+              <p class="row-side strong" data-i18n="skills.web">Web development</p>
+              <ul class="chips"><li>React</li><li>Vite</li><li>Tailwind CSS</li></ul>
+            </li>
+            <li class="row" style="--t: var(--lav)">
+              <p class="row-side strong" data-i18n="skills.programming">Programming</p>
+              <ul class="chips"><li>C/C++</li><li>Java</li><li>Python</li><li>SQL</li><li>TypeScript</li></ul>
+            </li>
+            <li class="row" style="--t: var(--pink)">
+              <p class="row-side strong" data-i18n="skills.tools">Tools</p>
+              <ul class="chips"><li>Git</li><li>GitHub</li><li>VS Code</li></ul>
+            </li>
+          </ul>
+
+          <ul class="rows rows-gap">
+            <li class="row" style="--t: var(--blue)">
+              <p class="row-side strong" data-i18n="skills.certification">Certification</p>
+              <ul class="chips"><li>AWS Academy Graduate, Cloud Foundations</li></ul>
+            </li>
+            <li class="row" style="--t: var(--green)">
+              <p class="row-side strong" data-i18n="skills.languages">Languages</p>
+              <ul class="chips">
+                <li data-i18n="skills.langAr">Arabic (native)</li>
+                <li data-i18n="skills.langEn">English (C1)</li>
+                <li data-i18n="skills.langFr">French (B1)</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="contact" aria-labelledby="contact-h">
+      <div class="wrap split">
+        <h2 id="contact-h" data-i18n="sections.contact">Contact</h2>
+        <div>
+          <p class="prose" data-i18n="contact.text">Feel free to write to me if you'd like to talk about networking, IoT, distributed systems or software.</p>
+          <a class="mail" href="mailto:douniazedlouafi@gmail.com">douniazedlouafi@gmail.com</a>
+          <ul class="contact-links">
+            <li><a class="btn" href="https://github.com/SDStiwi" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+            <li><a class="btn" href="https://www.linkedin.com/in/douniazed-louafi" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span data-i18n="footer.copyright">© 2026 Douniazed Louafi</span>
+      <span data-i18n="footer.location">Oran, Algeria</span>
+    </div>
+  </footer>
+
+  <!-- Return to top button -->
+  <button class="to-top" id="toTop" type="button" data-i18n-aria="ui.backToTop" aria-label="Back to top" title="Back to top">
+    <svg class="i" aria-hidden="true"><use href="#i-arrow-up"/></svg>
+  </button>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ==========================================================
+       0. SAFE STORAGE
+       ========================================================== */
+    var store = {
+      get: function (key) { try { return localStorage.getItem(key); } catch (e) { return null; } },
+      set: function (key, value) { try { localStorage.setItem(key, value); } catch (e) {} }
+    };
+
+    /* ==========================================================
+       1. TRANSLATIONS
+       ========================================================== */
+    var translations = {
+      en: {
+        pageTitle: "Douniazed Louafi — Networks, Distributed Systems & IoT",
+        pageDescription: "Portfolio of Douniazed Louafi, a Master's student in Networks and Distributed Systems interested in software, IoT and connected systems.",
+        skip: "Skip to content",
+        ui: {
+          mainNav: "Main navigation",
+          language: "Language",
+          techUsed: "Technologies used",
+          themeToDark: "Switch to dark mode",
+          themeToLight: "Switch to light mode",
+          backToTop: "Back to top"
+        },
+        nav: { about: "About", project: "Project", experience: "Experience", skills: "Skills", contact: "Contact" },
+        hero: {
+          hi: "Hi, I'm",
+          role: "Computer science Master's student, interested in networks, distributed systems and IoT",
+          lede: "I enjoy building software and connected devices, from small ESP32 systems to web dashboards.",
+          email: "Get in touch"
+        },
+        journey: {
+          title: "How a sensor reading travels through BoviSense",
+          subtitle: "A simple look at the path data takes in my graduation project.",
+          button: "Send a reading",
+          ready: "Ready",
+          another: "Send another reading",
+          messages: [
+            "Reading taken by the ESP32",
+            "Sent over LoRa",
+            "Received by the edge node",
+            "Published with MQTT and TLS",
+            "Arrives in the cloud",
+            "Shown on the React dashboard"
+          ],
+          delivered: "Delivered to the dashboard"
+        },
+        nodes: {
+          sensor:    { name: "Sensor node",  desc: "ESP32 with sensors, on the animal" },
+          lora:      { name: "LoRa link",    desc: "Long-range, low-power radio hop" },
+          edge:      { name: "Edge node",    desc: "Collects and forwards readings near the farm" },
+          mqtt:      { name: "MQTT and TLS", desc: "Secure telemetry transport" },
+          cloud:     { name: "Cloud",        desc: "Receives, processes and serves the data" },
+          dashboard: { name: "Dashboard",    desc: "React interface for monitoring" }
+        },
+        sections: { about: "About", project: "Project", experience: "Experience and education", skills: "Skills", contact: "Contact" },
+        about: {
+          p1: "I'm a Master's student in Computer Science, specializing in Networks and Distributed Systems. I've worked on software, IoT and connected systems, and I learn something new with every project.",
+          p2: "I enjoy turning technical ideas into practical solutions across networking, embedded systems, distributed systems and web development."
+        },
+        project: {
+          meta: "Graduation project, 2025–2026",
+          subtitle: "Smart Cattle Health Monitoring System",
+          description: "An IoT system for monitoring cattle health using ESP32-based sensor nodes, LoRa communication, MQTT with TLS, edge processing and a React dashboard. The prototype was tested under real cattle conditions, including sensor placement, telemetry acquisition and LoRa communication.",
+          demo: "Live Demo",
+          github: "View on GitHub"
+        },
+        experience: {
+          master: {
+            date: "2024–2026",
+            title: "Master's degree, Networks and Distributed Systems",
+            org: "University of Science and Technology of Oran Mohamed Boudiaf (USTO-MB)",
+            note: "Graduation project: BoviSense."
+          },
+          intern: {
+            date: "2023",
+            title: "IT Internship",
+            org: "SONATRACH",
+            note: "Exposure to IT support, networking and routine technical activities."
+          },
+          bachelor: {
+            date: "2021–2024",
+            title: "Bachelor's degree, Computer Science",
+            org: "University of Science and Technology of Oran Mohamed Boudiaf (USTO-MB)",
+            note: "Specialization in Information Systems Engineering and Software Engineering."
+          }
+        },
+        skills: {
+          networking: "Networking", iot: "IoT and embedded", cloud: "Cloud and distributed systems",
+          web: "Web development", programming: "Programming", tools: "Tools",
+          certification: "Certification", languages: "Languages",
+          langAr: "Arabic (native)", langEn: "English (C1)", langFr: "French (B1)"
+        },
+        contact: { text: "Feel free to write to me if you'd like to talk about networking, IoT, distributed systems or software." },
+        footer: { copyright: "© 2026 Douniazed Louafi", location: "Oran, Algeria" }
+      },
+
+      fr: {
+        pageTitle: "Douniazed Louafi — Réseaux, systèmes distribués & IoT",
+        pageDescription: "Portfolio de Douniazed Louafi, étudiante en Master Réseaux et Systèmes Distribués, intéressée par les logiciels, l'IoT et les systèmes connectés.",
+        skip: "Aller au contenu",
+        ui: {
+          mainNav: "Navigation principale",
+          language: "Langue",
+          techUsed: "Technologies utilisées",
+          themeToDark: "Passer en mode sombre",
+          themeToLight: "Passer en mode clair",
+          backToTop: "Retour en haut"
+        },
+        nav: { about: "À propos", project: "Projet", experience: "Parcours", skills: "Compétences", contact: "Contact" },
+        hero: {
+          hi: "Bonjour, je suis",
+          role: "Étudiante en Master Informatique, intéressée par les réseaux, les systèmes distribués et l'IoT",
+          lede: "J'aime développer des logiciels et des systèmes connectés, des petits systèmes ESP32 aux tableaux de bord web.",
+          email: "Me contacter"
+        },
+        journey: {
+          title: "Le trajet d'une mesure dans BoviSense",
+          subtitle: "Un aperçu simple du parcours des données dans mon projet de fin d'études.",
+          button: "Envoyer une mesure",
+          ready: "Prêt",
+          another: "Envoyer une autre mesure",
+          messages: [
+            "Mesure prise par l'ESP32",
+            "Envoyée via LoRa",
+            "Reçue par le nœud Edge",
+            "Publiée avec MQTT et TLS",
+            "Arrivée dans le cloud",
+            "Affichée sur le tableau de bord React"
+          ],
+          delivered: "Mesure arrivée au tableau de bord"
+        },
+        nodes: {
+          sensor:    { name: "Nœud capteur",    desc: "ESP32 avec capteurs, installé sur l'animal" },
+          lora:      { name: "Liaison LoRa",    desc: "Communication radio longue portée et basse consommation" },
+          edge:      { name: "Nœud Edge",       desc: "Collecte et transmet les mesures près de l'exploitation" },
+          mqtt:      { name: "MQTT et TLS",     desc: "Transport sécurisé des données" },
+          cloud:     { name: "Cloud",           desc: "Reçoit, traite et met les données à disposition" },
+          dashboard: { name: "Tableau de bord", desc: "Interface React de supervision" }
+        },
+        sections: { about: "À propos", project: "Projet", experience: "Parcours", skills: "Compétences", contact: "Contact" },
+        about: {
+          p1: "Je suis étudiante en Master Informatique, spécialisée en Réseaux et Systèmes Distribués. J'ai travaillé sur des logiciels, de l'IoT et des systèmes connectés, et j'apprends quelque chose de nouveau à chaque projet.",
+          p2: "J'aime transformer des idées techniques en solutions concrètes, entre réseaux, systèmes embarqués, systèmes distribués et développement web."
+        },
+        project: {
+          meta: "Projet de fin d'études, 2025–2026",
+          subtitle: "Système intelligent de surveillance de la santé des bovins",
+          description: "Un système IoT de surveillance de la santé des bovins utilisant des nœuds capteurs ESP32, la communication LoRa, MQTT avec TLS, un traitement Edge et un tableau de bord React. Le prototype a été testé dans des conditions réelles sur des bovins, notamment pour le positionnement des capteurs, l'acquisition des données et la communication LoRa.",
+          demo: "Démo en ligne",
+          github: "Voir sur GitHub"
+        },
+        experience: {
+          master: {
+            date: "2024–2026",
+            title: "Master en Réseaux et Systèmes Distribués",
+            org: "Université des Sciences et de la Technologie d'Oran Mohamed Boudiaf (USTO-MB)",
+            note: "Projet de fin d'études : BoviSense."
+          },
+          intern: {
+            date: "2023",
+            title: "Stage en informatique",
+            org: "SONATRACH",
+            note: "Découverte du support informatique, des réseaux et des activités techniques courantes."
+          },
+          bachelor: {
+            date: "2021–2024",
+            title: "Licence en Informatique",
+            org: "Université des Sciences et de la Technologie d'Oran Mohamed Boudiaf (USTO-MB)",
+            note: "Spécialité : Ingénierie des Systèmes d'Information et Génie Logiciel."
+          }
+        },
+        skills: {
+          networking: "Réseaux", iot: "IoT et systèmes embarqués", cloud: "Cloud et systèmes distribués",
+          web: "Développement web", programming: "Programmation", tools: "Outils",
+          certification: "Certification", languages: "Langues",
+          langAr: "Arabe (langue maternelle)", langEn: "Anglais (C1)", langFr: "Français (B1)"
+        },
+        contact: { text: "N'hésitez pas à m'écrire pour échanger sur les réseaux, l'IoT, les systèmes distribués ou les projets logiciels." },
+        footer: { copyright: "© 2026 Douniazed Louafi", location: "Oran, Algérie" }
+      },
+
+      ar: {
+        pageTitle: "دنيازاد لوافي — الشبكات والأنظمة الموزعة وإنترنت الأشياء",
+        pageDescription: "الملف الشخصي لدنيازاد لوافي، طالبة ماستر في الشبكات والأنظمة الموزعة، مهتمة بالبرمجيات وإنترنت الأشياء والأنظمة المتصلة.",
+        skip: "الانتقال إلى المحتوى",
+        ui: {
+          mainNav: "التنقل الرئيسي",
+          language: "اللغة",
+          techUsed: "التقنيات المستخدمة",
+          themeToDark: "التبديل إلى الوضع الداكن",
+          themeToLight: "التبديل إلى الوضع الفاتح",
+          backToTop: "العودة إلى الأعلى"
+        },
+        nav: { about: "نبذة", project: "المشروع", experience: "المسار", skills: "المهارات", contact: "تواصل" },
+        hero: {
+          hi: "مرحباً، أنا",
+          role: "طالبة ماستر في الإعلام الآلي، مهتمة بالشبكات والأنظمة الموزعة وإنترنت الأشياء",
+          lede: "أستمتع ببناء البرمجيات والأنظمة المتصلة، من أنظمة ESP32 الصغيرة إلى لوحات المراقبة على الويب.",
+          email: "تواصل معي"
+        },
+        journey: {
+          title: "رحلة قراءة المستشعر داخل BoviSense",
+          subtitle: "نظرة بسيطة على مسار البيانات في مشروع نهاية دراستي.",
+          button: "إرسال قراءة",
+          ready: "جاهز",
+          another: "إرسال قراءة أخرى",
+          messages: [
+            "تم أخذ القراءة بواسطة ESP32",
+            "تم إرسالها عبر LoRa",
+            "تم استقبالها بواسطة عقدة Edge",
+            "تم نشرها باستخدام MQTT وTLS",
+            "وصلت إلى السحابة",
+            "ظهرت على لوحة React"
+          ],
+          delivered: "وصلت القراءة إلى لوحة المراقبة"
+        },
+        nodes: {
+          sensor:    { name: "عقدة المستشعر", desc: "ESP32 مع المستشعرات، مثبت على الحيوان" },
+          lora:      { name: "وصلة LoRa",     desc: "اتصال لاسلكي بعيد المدى ومنخفض استهلاك الطاقة" },
+          edge:      { name: "عقدة Edge",     desc: "تجمع القراءات وترسلها بالقرب من المزرعة" },
+          mqtt:      { name: "MQTT وTLS",     desc: "نقل آمن للبيانات" },
+          cloud:     { name: "السحابة",        desc: "تستقبل البيانات وتعالجها وتوفرها للتطبيق" },
+          dashboard: { name: "لوحة المراقبة", desc: "واجهة React للمراقبة" }
+        },
+        sections: { about: "نبذة عني", project: "المشروع", experience: "المسار", skills: "المهارات", contact: "تواصل" },
+        about: {
+          p1: "أنا طالبة ماستر في الإعلام الآلي، متخصصة في الشبكات والأنظمة الموزعة. عملت على برمجيات وإنترنت الأشياء وأنظمة متصلة، وأتعلم شيئاً جديداً مع كل مشروع.",
+          p2: "أستمتع بتحويل الأفكار التقنية إلى حلول عملية في الشبكات والأنظمة المدمجة والأنظمة الموزعة وتطوير الويب."
+        },
+        project: {
+          meta: "مشروع نهاية الدراسة، 2025–2026",
+          subtitle: "نظام ذكي لمراقبة صحة الأبقار",
+          description: "نظام لإنترنت الأشياء لمراقبة صحة الأبقار باستخدام عقد مستشعرات مبنية على ESP32، واتصال LoRa، وMQTT مع TLS، ومعالجة Edge، ولوحة مراقبة مبنية باستخدام React. تم اختبار النموذج الأولي في ظروف حقيقية على الأبقار، بما في ذلك وضع المستشعرات واكتساب البيانات واختبار اتصال LoRa.",
+          demo: "التجربة المباشرة",
+          github: "المشروع على GitHub"
+        },
+        experience: {
+          master: {
+            date: "2024–2026",
+            title: "ماستر في الشبكات والأنظمة الموزعة",
+            org: "جامعة العلوم والتكنولوجيا بوهران محمد بوضياف (USTO-MB)",
+            note: "مشروع نهاية الدراسة: BoviSense."
+          },
+          intern: {
+            date: "2023",
+            title: "تربص في الإعلام الآلي",
+            org: "سوناطراك",
+            note: "تعرّف على الدعم التقني، والشبكات وبعض الأنشطة التقنية اليومية."
+          },
+          bachelor: {
+            date: "2021–2024",
+            title: "ليسانس في الإعلام الآلي",
+            org: "جامعة العلوم والتكنولوجيا بوهران محمد بوضياف (USTO-MB)",
+            note: "التخصص: هندسة نظم المعلومات وهندسة البرمجيات."
+          }
+        },
+        skills: {
+          networking: "الشبكات", iot: "إنترنت الأشياء والأنظمة المدمجة", cloud: "السحابة والأنظمة الموزعة",
+          web: "تطوير الويب", programming: "البرمجة", tools: "الأدوات",
+          certification: "الشهادات", languages: "اللغات",
+          langAr: "العربية (اللغة الأم)", langEn: "الإنجليزية (C1)", langFr: "الفرنسية (B1)"
+        },
+        contact: { text: "يسعدني أن تراسلني إن رغبت في الحديث عن الشبكات أو إنترنت الأشياء أو الأنظمة الموزعة أو البرمجيات." },
+        footer: { copyright: "© 2026 دنيازاد لوافي", location: "وهران، الجزائر" }
+      }
+    };
+
+    /* ==========================================================
+       2. HELPERS & ELEMENTS
+       ========================================================== */
+    function getNested(object, path) {
+      return path.split('.').reduce(function (current, key) {
+        return current && current[key] !== undefined ? current[key] : null;
+      }, object);
+    }
+
+    function wait(ms) { return new Promise(function (resolve) { setTimeout(resolve, ms); }); }
+
+    var root = document.documentElement;
+    var topbar = document.querySelector('.topbar');
+    var toTop = document.getElementById('toTop');
+    var langButtons = Array.prototype.slice.call(document.querySelectorAll('.lang button'));
+    var themeButton = document.getElementById('themeToggle');
+    var map = document.getElementById('map');
+    var nodes = Array.prototype.slice.call(map.querySelectorAll('.node'));
+    var packet = document.getElementById('packet');
+    var sendButton = document.getElementById('send');
+    var statusEl = document.getElementById('status');
+
+    var running = false;
+    var currentLanguage = 'en';
+
+    /* ==========================================================
+       3. LANGUAGE
+       ========================================================== */
+    function resetNodes() {
+      nodes.forEach(function (node) { node.classList.remove('lit', 'sent'); });
+    }
+
+    function applyLanguage(language) {
+      var data = translations[language] || translations.en;
+      currentLanguage = translations[language] ? language : 'en';
+
+      root.lang = currentLanguage;
+      root.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+      document.title = data.pageTitle;
+
+      var meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute('content', data.pageDescription);
+
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var value = getNested(data, el.getAttribute('data-i18n'));
+        if (typeof value === 'string') el.textContent = value;
+      });
+
+      document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
+        var value = getNested(data, el.getAttribute('data-i18n-aria'));
+        if (typeof value === 'string') el.setAttribute('aria-label', value);
+      });
+
+      langButtons.forEach(function (button) {
+        button.setAttribute('aria-pressed', button.getAttribute('data-lang') === currentLanguage ? 'true' : 'false');
+      });
+
+      updateThemeLabel();
+      updateToTopLabel();
+
+      if (!running) {
+        resetNodes();
+        statusEl.textContent = data.journey.ready;
+        sendButton.textContent = data.journey.button;
+      }
+
+      store.set('portfolio-language', currentLanguage);
+    }
+
+    langButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        applyLanguage(button.getAttribute('data-lang'));
+      });
+    });
+
+    /* ==========================================================
+       4. THEME
+       ========================================================== */
+    function updateThemeLabel() {
+      var t = translations[currentLanguage].ui;
+      var isDark = root.getAttribute('data-theme') === 'dark';
+      var label = isDark ? t.themeToLight : t.themeToDark;
+      themeButton.setAttribute('aria-label', label);
+      themeButton.setAttribute('title', label);
+    }
+
+    function applyTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      store.set('portfolio-theme', theme);
+      var themeColor = document.querySelector('meta[name="theme-color"]');
+      if (themeColor) themeColor.setAttribute('content', theme === 'dark' ? '#14131F' : '#FAF7FC');
+      updateThemeLabel();
+    }
+
+    themeButton.addEventListener('click', function () {
+      applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+
+    /* ==========================================================
+       5. RETURN-TO-TOP LABEL
+       ========================================================== */
+    function updateToTopLabel() {
+      var label = translations[currentLanguage].ui.backToTop;
+      toTop.setAttribute('aria-label', label);
+      toTop.setAttribute('title', label);
+    }
+
+    /* ==========================================================
+       6. SCROLL STATE — sticky bar + to-top button
+       ========================================================== */
+    var lastStuck = null;
+    var lastVisible = null;
+
+    function syncScrollUI() {
+      var y = window.scrollY || window.pageYOffset || 0;
+
+      var isStuck = y > 8;
+      if (isStuck !== lastStuck) {
+        topbar.classList.toggle('is-stuck', isStuck);
+        lastStuck = isStuck;
+      }
+
+      var isVisible = y > 600;
+      if (isVisible !== lastVisible) {
+        toTop.classList.toggle('is-visible', isVisible);
+        lastVisible = isVisible;
+      }
+    }
+
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    toTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+
+    window.addEventListener('scroll', syncScrollUI, { passive: true });
+    syncScrollUI();
+
+    /* ==========================================================
+       7. JOURNEY ANIMATION
+       ========================================================== */
+    function center(node) {
+      var mapRect = map.getBoundingClientRect();
+      var dotRect = node.querySelector('.dot').getBoundingClientRect();
+      var half = packet.offsetWidth / 2;
+      return {
+        x: dotRect.left - mapRect.left + dotRect.width / 2 - half,
+        y: dotRect.top - mapRect.top + dotRect.height / 2 - half
+      };
+    }
+
+    function arrive(index) {
+      nodes[index].classList.add('lit');
+      if (index > 0) nodes[index - 1].classList.add('sent');
+      statusEl.textContent = translations[currentLanguage].journey.messages[index];
+    }
+
+    function place(point, angle) {
+      return 'translate(' + point.x + 'px, ' + point.y + 'px) rotate(' + angle + 'deg)';
+    }
+
+    function fly(from, to) {
+      var animation = packet.animate(
+        [{ transform: place(from, 0) }, { transform: place(to, 180) }],
+        { duration: 650, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards' }
+      );
+      return animation.finished;
+    }
+
+    async function runAnimation() {
+      if (running) return;
+      running = true;
+      resetNodes();
+
+      var text = translations[currentLanguage].journey;
+
+      if (reduceMotion || !packet.animate) {
+        nodes.forEach(function (_, index) { arrive(index); });
+        statusEl.textContent = text.delivered;
+        sendButton.textContent = text.another;
+        running = false;
+        return;
+      }
+
+      try {
+        var points = nodes.map(center);
+        packet.getAnimations().forEach(function (a) { a.cancel(); });
+        packet.style.transform = place(points[0], 0);
+        packet.style.opacity = '1';
+
+        arrive(0);
+        await wait(350);
+
+        for (var index = 1; index < nodes.length; index++) {
+          await fly(points[index - 1], points[index]);
+          arrive(index);
+          await wait(200);
+        }
+        statusEl.textContent = translations[currentLanguage].journey.delivered;
+      } catch (error) {
+        nodes.forEach(function (_, index) { arrive(index); });
+      } finally {
+        packet.style.opacity = '0';
+        await wait(300);
+        packet.getAnimations().forEach(function (a) { a.cancel(); });
+        sendButton.textContent = translations[currentLanguage].journey.another;
+        running = false;
+      }
+    }
+
+    sendButton.addEventListener('click', runAnimation);
+
+    /* Reset journey if layout changes mid-session */
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        if (running) return;
+        packet.style.opacity = '0';
+        resetNodes();
+        statusEl.textContent = translations[currentLanguage].journey.ready;
+        sendButton.textContent = translations[currentLanguage].journey.button;
+      }, 150);
+    });
+
+    /* ==========================================================
+       8. START
+       ========================================================== */
+    var savedLanguage = store.get('portfolio-language');
+    applyLanguage(savedLanguage === 'fr' || savedLanguage === 'ar' ? savedLanguage : 'en');
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+
+    function start() { setTimeout(runAnimation, 600); }
+    if (document.readyState === 'complete') { start(); }
+    else { window.addEventListener('load', start); }
+  })();
+  </script>
+
+</body>
+</html>
